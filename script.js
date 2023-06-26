@@ -1,47 +1,47 @@
-
 document.addEventListener("DOMContentLoaded", function() {
- 
-    let removeButtonA = document.getElementById("removeButton-a");
-    let removeButtonB = document.getElementById("removeButton-b");
-    let removeButtonC = document.getElementById("removeButton-c");
-    let removeButtonD = document.getElementById("removeButton-d");
-    let removeButtonE = document.getElementById("removeButton-e");
-    let removeButtonF = document.getElementById("removeButton-f");
-    let removeButtonG = document.getElementById("removeButton-g");
-    let removeButtonH = document.getElementById("removeButton-h");
-
-
-    removeButtonA.addEventListener("click", function() {
-      removeCard("card card-a");
-    });
-    removeButtonB.addEventListener("click", function() {
-      removeCard("card card-b");
-    });
-    removeButtonC.addEventListener("click", function() {
-      removeCard("card card-c");
-    });
-    removeButtonD.addEventListener("click", function() {
-        removeCard("card card-d");
-      });
-      removeButtonE.addEventListener("click", function() {
-        removeCard("card card-e");
-      });
-      removeButtonF.addEventListener("click", function() {
-        removeCard("card card-f");
-      });
-      removeButtonG.addEventListener("click", function() {
-          removeCard("card card-g");
-        });
-        removeButtonH.addEventListener("click", function() {
-          removeCard("card card-h");
-        });
+    let removeButtons = document.querySelectorAll(".removeButton");
   
-
+    removeButtons.forEach(function(removeButton) {
+        removeButton.addEventListener("click", function() {
+            removeCard(this.dataset.cardId);
+        });
+    });
+  
     function removeCard(cardId) {
-      var card = document.getElementById(cardId);
-      if (card) {
-        card.remove();
-      }
+        let card = document.getElementById(cardId);
+        if (card) {
+            card.remove();
+        }
     }
-  });
   
+    let form = document.getElementById("ballForm");
+  
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+  
+        let ballName = document.getElementById("ballName").value;
+        let ballImage = document.getElementById("ballImage").value;
+        let ballPrice = document.getElementById("ballPrice").value;
+        let inStock = document.getElementById("inStock").value;
+  
+        let newCard = document.createElement("div");
+        newCard.className = "card";
+  
+        newCard.innerHTML = `
+            <img alt="${ballName}" style="width: 100px; height: auto;" src="${ballImage}" />
+            <figcaption>${ballName}</figcaption>
+            <button class="red-button removeButton" data-card-id="card-${Date.now()}">Remove</button>
+            <div class="price">
+                <p>$${ballPrice}</p>
+            </div>
+            <div class="inStock">
+                <p>In Stock: ${inStock}</p>
+            </div>
+        `;
+  
+        document.querySelector(".layout").appendChild(newCard);
+  
+        // Reset the form fields
+        form.reset();
+    });
+});
